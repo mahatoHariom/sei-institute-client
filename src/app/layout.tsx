@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import Navbar from "@/components/home/navbar";
+import { navLinks } from "@/constants/nav-link";
+import { ThemeProvider } from "@/components/global/theme-provider";
+import { fontMontserrat } from "@/config/fonts";
+import { Providers } from "@/lib/providers";
+import { Toaster } from "@/components/ui/sonner";
+import GlobalModal from "@/components/global/modal/global-modal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +20,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${fontMontserrat.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <div className="relative flex flex-col h-screen">
+              <Navbar links={navLinks} />
+              <GlobalModal />
+
+              <main>
+                <Toaster richColors position="top-right" />
+                {children}
+              </main>
+            </div>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );
