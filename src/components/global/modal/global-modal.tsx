@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { closeModal } from "@/store/slices/modalSlice";
 import { getModalContent } from "@/components/component-registery";
-import { ModalFooter } from "./modal-footer";
+// import { ModalFooter } from "./modal-footer";
 
 export const GlobalModal = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ export const GlobalModal = () => {
         </div>
 
         {/* Render the modal footer */}
-        <ModalFooter closeHandler={hideModal} formId="modal-form" />
+        {/* <ModalFooter closeHandler={hideModal} onSubmit={() => {}} /> */}
       </DialogContent>
     </Dialog>
   );
