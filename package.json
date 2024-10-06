@@ -12,6 +12,7 @@
     "docker:dev": "docker build -t && docker run -p 3000:3000 "
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@iconify/react": "^5.0.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -30,6 +31,7 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",

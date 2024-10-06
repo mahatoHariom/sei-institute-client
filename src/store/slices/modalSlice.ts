@@ -1,39 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ReactNode } from "react";
+import { ModalContentKey } from "@/types/modal-keys";
 
 interface ModalState {
   isOpen: boolean;
   title: string;
   description: string;
-  content: (() => ReactNode) | null; // content can be a function returning ReactNode
-  footer: (() => ReactNode) | null; // content can be a function returning ReactNode
+  contentKey: ModalContentKey | null;
 }
 
 const initialState: ModalState = {
   isOpen: false,
   title: "",
   description: "",
-  content: null,
-  footer: null,
+  contentKey: null,
 };
 
 const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openModal: (state, action: PayloadAction<Partial<ModalState>>) => {
-      state.isOpen = true;
-      state.title = action.payload.title || "";
-      state.description = action.payload.description || "";
-      state.content = action.payload.content || null;
-      state.footer = action.payload.footer || null;
+    openModal: (state, action: PayloadAction<ModalState>) => {
+      // Ensure only one modal is open at a time
+      return { ...action.payload, isOpen: true };
     },
     closeModal: (state) => {
       state.isOpen = false;
-      state.title = "";
-      state.description = "";
-      state.content = null;
-      state.footer = null;
     },
   },
 });

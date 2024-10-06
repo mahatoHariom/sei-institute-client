@@ -1,13 +1,11 @@
-// import { Button } from "@/components/ui/button";
-// import Image from "next/image";
+"use client";
 
-import { ExampleComponent } from "@/components/example";
+import { EditProfile } from "@/components/edit-profile";
 
 export default function Home() {
   return (
     <>
-      {/* <Button>Helo</Button> */}
-      <ExampleComponent />
+      <EditProfile />
     </>
   );
 }

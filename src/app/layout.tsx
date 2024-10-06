@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/global/theme-provider";
 import { fontMontserrat } from "@/config/fonts";
 import { Providers } from "@/lib/providers";
 import { Toaster } from "@/components/ui/sonner";
-import GlobalModal from "@/components/global/modal/global-modal";
+import { GlobalModal } from "@/components/global/modal/global-modal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={`${fontMontserrat.variable} antialiased`}>
         <ThemeProvider
           attribute="class"

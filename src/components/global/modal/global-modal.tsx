@@ -1,46 +1,47 @@
 "use client";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { closeModal } from "@/store/slices/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { closeModal } from "@/store/slices/modalSlice";
+import { getModalContent } from "@/components/component-registery";
+import { ModalFooter } from "./modal-footer";
 
-const GlobalModal = () => {
+export const GlobalModal = () => {
   const dispatch = useDispatch();
-  const { isOpen, title, description, content, footer } = useSelector(
+  const { isOpen, title, description, contentKey } = useSelector(
     (state: RootState) => state.modal
   );
 
+  const hideModal = () => {
+    dispatch(closeModal());
+  };
+
+  if (!isOpen) return null; // Only render modal if open
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => dispatch(closeModal())}>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={isOpen} onOpenChange={hideModal}>
+      <DialogContent>
+        {/* Modal header with title and description */}
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          {/* Render content */}
-          {content && typeof content === "function" ? content() : content}
+
+        {/* Dynamically rendered modal content */}
+
+        <div className="py-4">
+          {getModalContent(contentKey)} {/* Render content dynamically */}
         </div>
-        <DialogFooter>
-          {/* Render footer content if available */}
-          {footer && (typeof footer === "function" ? footer() : footer)}
-          {/* Always display the Close button */}
-          <Button type="button" onClick={() => dispatch(closeModal())}>
-            Close
-          </Button>
-        </DialogFooter>
+
+        {/* Render the modal footer */}
+        <ModalFooter closeHandler={hideModal} formId="modal-form" />
       </DialogContent>
     </Dialog>
   );
 };
-
-export default GlobalModal;

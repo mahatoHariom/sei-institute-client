@@ -1,9 +1,9 @@
 import { linksType } from "@/types/navbar.types";
 
 export const navLinks: linksType = [
-  { href: "#", label: "Home" },
-  { href: "#", label: "About" },
-  { href: "#", label: "Courses" },
-  { href: "#", label: "Test" },
-  { href: "#", label: "Contact Us" },
+  { href: "1", label: "Home" },
+  { href: "2", label: "About" },
+  { href: "3", label: "Courses" },
+  { href: "4", label: "Test" },
+  { href: "5", label: "Contact Us" },
 ];
