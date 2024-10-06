@@ -4,6 +4,8 @@ import { EditProfileData, editProfileSchema } from "@/schema/profile";
 import { FormWrapper } from "./global/form-wrapper";
 import { useDispatch } from "react-redux";
 import { closeModal } from "@/store/slices/modalSlice";
+import { ModalFooter } from "./global/modal/modal-footer";
+// import { ModalFooter } from "./modal-footer"; // Import ModalFooter
 
 export const EditForm = () => {
   const dispatch = useDispatch();
@@ -19,17 +21,24 @@ export const EditForm = () => {
       defaultValues={{ name: "", username: "" }}
       validationSchema={editProfileSchema}
       onSubmit={onSubmit}
-      formId="modal-form" // Set form ID for submission
     >
-      {(methods) => (
-        <div className="flex flex-col gap-3">
-          <Input id="name" placeholder="Name" {...methods.register("name")} />
-          <Input
-            id="username"
-            placeholder="Username"
-            {...methods.register("username")}
+      {(methods, handleSubmit) => (
+        <>
+          <div className="flex flex-col gap-3">
+            <Input id="name" placeholder="Name" {...methods.register("name")} />
+            <Input
+              id="username"
+              placeholder="Username"
+              {...methods.register("username")}
+            />
+          </div>
+
+          {/* Pass handleSubmit directly to ModalFooter */}
+          <ModalFooter
+            closeHandler={() => dispatch(closeModal())}
+            onSubmit={handleSubmit}
           />
-        </div>
+        </>
       )}
     </FormWrapper>
   );

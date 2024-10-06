@@ -13,8 +13,10 @@ interface FormWrapperProps<T extends FieldValues> {
   defaultValues: T;
   validationSchema?: ZodSchema<T>;
   onSubmit: (data: T) => void;
-  children: (methods: UseFormReturn<T>) => React.ReactNode;
-  formId?: string;
+  children: (
+    methods: UseFormReturn<T>,
+    onSubmit: () => void
+  ) => React.ReactNode;
 }
 
 export const FormWrapper = <T extends FieldValues>({
@@ -22,7 +24,6 @@ export const FormWrapper = <T extends FieldValues>({
   validationSchema,
   onSubmit,
   children,
-  formId = "form-wrapper",
 }: FormWrapperProps<T>) => {
   const methods = useForm<T>({
     defaultValues: defaultValues as DefaultValues<T> | DefaultValues<T>,
@@ -31,9 +32,7 @@ export const FormWrapper = <T extends FieldValues>({
 
   return (
     <FormProvider {...methods}>
-      <form id={formId} onSubmit={methods.handleSubmit(onSubmit)}>
-        {children(methods)}
-      </form>
+      {children(methods, methods.handleSubmit(onSubmit))}
     </FormProvider>
   );
 };
