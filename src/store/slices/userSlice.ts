@@ -1,28 +1,31 @@
 import { Role } from "@/types/user";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the state type as a union of User and null
-// type UserState = User;
-
-// const initialState: UserState = null;
+// Define the initial state for the user
+const initialState = {
+  id: "",
+  fullName: "",
+  isVerified: false,
+  role: Role.user,
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    id: "",
-    fullName: "",
-    isVerified: false,
-    role: Role.user,
-  },
+  initialState,
   reducers: {
-    setUser: (state, action) => {
+    // Sets the user data in the state
+    setUser: (state, action: PayloadAction<typeof initialState>) => {
       return action.payload;
     },
-    // clearUser: () => {
-    //   return iit;
-    // },
+    // Clears the user data by resetting to the initial state
+    clearUser: () => {
+      return initialState; // Reset to initial state
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+// Export the actions
+export const { setUser, clearUser } = userSlice.actions;
+
+// Export the reducer
 export default userSlice.reducer;

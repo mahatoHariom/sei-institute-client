@@ -1,11 +1,12 @@
 interface AuthMessages {
-  success: string;
-  error: string;
+  success?: string;
+  error?: string;
 }
 
 interface Messages {
   login: AuthMessages;
   register: AuthMessages;
+  logout: AuthMessages;
 }
 
 export const Messages: Messages = {
@@ -17,5 +18,8 @@ export const Messages: Messages = {
     success:
       "Registration successful! Please check your email to verify your account.",
     error: "Registration failed. Please try again later or contact support.",
+  },
+  logout: {
+    success: "Logout successful!",
   },
 };
