@@ -4,8 +4,8 @@ import NavLink from "./nav-link";
 import Iconify from "@/components/global/iconify";
 import MobileMenu from "./mobile-menu";
 import { NavbarProps } from "@/types/navbar.types";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/global/theme-toggle";
+import { SignUpButton } from "@/components/auth/signup-button";
 
 const Navbar: React.FC<NavbarProps> = ({ links }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
             {links.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            <Button variant={"destructive"}>Join Us</Button>
+            <SignUpButton />
             <ModeToggle />
           </div>
           {/* Hamburger Button */}

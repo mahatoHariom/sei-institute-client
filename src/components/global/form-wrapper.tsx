@@ -1,21 +1,20 @@
-"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  FormProvider,
   useForm,
-  UseFormReturn,
+  FormProvider,
   FieldValues,
   DefaultValues,
+  UseFormReturn,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ZodSchema } from "zod";
+import { Form } from "@/components/ui/form";
 
 interface FormWrapperProps<T extends FieldValues> {
-  defaultValues: T;
-  validationSchema?: ZodSchema<T>;
+  defaultValues: DefaultValues<T>;
+  validationSchema: ZodSchema<T>;
   onSubmit: (data: T) => void;
   children: (
-    methods: UseFormReturn<T>,
-    onSubmit: () => void
+    methods: UseFormReturn<T> & { isValid: boolean }
   ) => React.ReactNode;
 }
 
@@ -26,13 +25,18 @@ export const FormWrapper = <T extends FieldValues>({
   children,
 }: FormWrapperProps<T>) => {
   const methods = useForm<T>({
-    defaultValues: defaultValues as DefaultValues<T> | DefaultValues<T>,
-    resolver: validationSchema ? zodResolver(validationSchema) : undefined,
+    defaultValues,
+    resolver: zodResolver(validationSchema),
+    mode: "onChange",
   });
 
   return (
     <FormProvider {...methods}>
-      {children(methods, methods.handleSubmit(onSubmit))}
+      <Form {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          {children({ ...methods, isValid: methods.formState.isValid })}
+        </form>
+      </Form>
     </FormProvider>
   );
 };

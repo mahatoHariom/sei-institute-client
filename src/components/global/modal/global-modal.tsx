@@ -25,13 +25,13 @@ export const GlobalModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={hideModal}>
-      <DialogContent>
+      <DialogContent className="w-fit border min-w-96 ">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
-        <div className="py-4">{getModalContent(contentKey)}</div>
+        <div className="py-4  h-full ">{getModalContent(contentKey)}</div>
       </DialogContent>
     </Dialog>
   );

@@ -1,17 +1,12 @@
-import { IRegisterUser } from "@/schema/users";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { SignUpFormData } from "@/schema/signup-schema";
+// import { IRegisterUser } from "@/schema/users";
 import registerUser from "@/services/users";
-// import { registerUser } from "@/services/users";
-import { User } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
+// import { toast } from "sonner";
 
-export function useRegisterUser() {
-  return useMutation((data: IRegisterUser) => registerUser(data), {
-    onSuccess: (response: User) => {
-      console.log("Registration successful:", response);
-    },
-    onError: (error: Error) => {
-      console.error("Registration error:", error);
-    },
+export const useRegisterUser = () => {
+  return useMutation({
+    mutationFn: (values: SignUpFormData) => registerUser(values),
   });
-}
-==
+};

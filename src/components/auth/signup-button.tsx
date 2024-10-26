@@ -1,22 +1,23 @@
 "use client";
 import { useDispatch } from "react-redux";
 import { openModal } from "@/store/slices/modalSlice";
-import { Button } from "./ui/button";
-import { ModalContentKey } from "@/types/modal-keys";
 
-export const EditProfile = () => {
+import { ModalContentKey } from "@/types/modal-keys";
+import { Button } from "../ui/button";
+
+export const SignUpButton = () => {
   const dispatch = useDispatch();
 
   const handleEditProfile = () => {
     dispatch(
       openModal({
-        title: "Edit Profile",
-        description: "Make changes to your profile.",
-        contentKey: ModalContentKey.EditProfileForm,
+        title: "SignUp",
+        description: "Create account ,be a scholar,",
+        contentKey: ModalContentKey.SignUpForm,
         isOpen: true,
       })
     );
   };
 
-  return <Button onClick={handleEditProfile}>Edit Profile</Button>;
+  return <Button onClick={handleEditProfile}>Signup</Button>;
 };

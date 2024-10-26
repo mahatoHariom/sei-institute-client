@@ -1,16 +1,17 @@
 "use client";
 import { ModalContentKey } from "@/types/modal-keys";
 import { EditForm } from "./edit-profile-modal";
+import { SignUpForm } from "./auth/signup-form";
 
 const componentRegistry = {
-  [ModalContentKey.EditProfileForm]: EditForm, // Correct mapping for the form
-  // Add other modal content components here as needed
+  [ModalContentKey.EditProfileForm]: EditForm,
+  [ModalContentKey.SignUpForm]: SignUpForm,
 };
 
 export const getModalContent = (key: ModalContentKey | null) => {
   if (key && componentRegistry[key]) {
     const Component = componentRegistry[key];
-    return <Component />; // Properly render the content based on the key
+    return <Component />;
   }
-  return null; // Return null if no matching component
+  return null;
 };

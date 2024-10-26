@@ -33,7 +33,7 @@ export default function RootLayout({
               <GlobalModal />
 
               <main>
-                <Toaster richColors position="top-right" />
+                <Toaster richColors position="bottom-right" />
                 {children}
               </main>
             </div>
