@@ -1,4 +1,3 @@
-// File location: @/lib/customMetaDataGenerator.ts
 import { Metadata } from "next";
 
 interface PageSEOProps {
