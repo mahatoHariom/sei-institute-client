@@ -8,7 +8,7 @@ import userReducer from "./slices/userSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["modal", "user"], // Add 'user' to the whitelist to persist both
+  whitelist: ["modal", "user"],
 };
 
 // Combine all reducers first
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer, // Use the combined persistedReducer here
+  reducer: persistedReducer,
 });
 
 export const persistor = persistStore(store);

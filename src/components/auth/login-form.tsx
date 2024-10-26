@@ -4,51 +4,48 @@ import { useDispatch } from "react-redux";
 import { closeModal } from "@/store/slices/modalSlice";
 import { FormWrapper } from "../global/form-wrapper";
 import { ModalFooter } from "../global/modal/modal-footer";
-import { SignUpFormData, signUpSchema } from "@/schema/users/signup-schema";
+import Cookies from "js-cookie";
 
 import { FormFieldWrapper } from "../global/form-field-wrapper";
 
 import { toast } from "sonner";
 import { Messages } from "@/constants/messages";
-import { useRegisterUser } from "@/hooks/users/use-register-hooks";
+import { useLoginUser } from "@/hooks/users/use-login-hooks";
+import { LoginFormData, loginSchema } from "@/schema/users/login-schema";
+import { handleError } from "@/helpers/handle-error";
+import { setUser } from "@/store/slices/userSlice";
 
-export const SignUpForm = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
 
-  const { mutate: registerUser, isPending } = useRegisterUser();
+  const { mutate: loginUser, isPending } = useLoginUser();
 
-  const onSubmit = (data: SignUpFormData) => {
-    registerUser(data, {
-      onSuccess: () => {
+  const onSubmit = (data: LoginFormData) => {
+    loginUser(data, {
+      onSuccess: (data) => {
+        Cookies.set("accessToken", data.accessToken);
+        Cookies.set("refreshToken", data.refreshToken);
+        dispatch(setUser(data.user));
+        toast.success(Messages.login.success);
+
         dispatch(closeModal());
-        toast.success(Messages.register.success);
       },
-      onError: (error) => {
-        console.error("Registration error:", error);
-      },
+      onError: handleError,
     });
   };
 
   return (
     <FormWrapper
       defaultValues={{
-        fullName: "",
         email: "",
         password: "",
-        confirmPassword: "",
       }}
-      validationSchema={signUpSchema}
+      validationSchema={loginSchema}
       onSubmit={onSubmit}
     >
       {({ control, isValid, handleSubmit }) => (
         <>
           <div className="flex flex-col gap-3 w-full">
-            <FormFieldWrapper
-              name="fullName"
-              label="Full Name"
-              placeholder="Full Name"
-              control={control}
-            />
             <FormFieldWrapper
               name="email"
               label="Email Address"
@@ -59,12 +56,6 @@ export const SignUpForm = () => {
               name="password"
               label="Password"
               placeholder="Enter your password..."
-              control={control}
-            />
-            <FormFieldWrapper
-              name="confirmPassword"
-              label="Confirm Password"
-              placeholder="Confirm your password..."
               control={control}
             />
 

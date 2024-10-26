@@ -1,11 +1,12 @@
 "use client";
 import { ModalContentKey } from "@/types/modal-keys";
-import { EditForm } from "./edit-profile-modal";
+
 import { SignUpForm } from "./auth/signup-form";
+import { LoginForm } from "./auth/login-form";
 
 const componentRegistry = {
-  [ModalContentKey.EditProfileForm]: EditForm,
   [ModalContentKey.SignUpForm]: SignUpForm,
+  [ModalContentKey.LoginForm]: LoginForm,
 };
 
 export const getModalContent = (key: ModalContentKey | null) => {

@@ -6,5 +6,6 @@ export const MODAL_KEYS = {
 export enum ModalContentKey {
   EditProfileForm = "EditProfileForm",
   SignUpForm = "SignUpForm",
+  LoginForm = "LoginForm",
   // Add other content keys here as needed
 }

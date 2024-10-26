@@ -1,5 +1,12 @@
+export enum Role {
+  user = "user",
+  admin = "admin",
+}
+
 export interface User {
   id: string;
-  name: string;
+  fullName: string;
   email: string;
+  isVerified: boolean;
+  role: Role;
 }

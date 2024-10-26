@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import NavLink from "./nav-link";
 import Iconify from "@/components/global/iconify";
@@ -6,9 +7,14 @@ import MobileMenu from "./mobile-menu";
 import { NavbarProps } from "@/types/navbar.types";
 import { ModeToggle } from "@/components/global/theme-toggle";
 import { SignUpButton } from "@/components/auth/signup-button";
+import { LoginButton } from "@/components/auth/login-button";
+import UserDropdown from "./user-dropdown";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Navbar: React.FC<NavbarProps> = ({ links }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { id } = useSelector((state: RootState) => state.user);
 
   return (
     <nav className="bg-primary-foreground shadow">
@@ -16,14 +22,24 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 text-center">
             <h1 className="text-xl font-bold capitalize">sei institute</h1>
-            <p className="text-xs">Join a scholar , be a scholar</p>
+            <p className="text-xs">Join a scholar, be a scholar</p>
           </div>
           {/* Desktop Nav Links */}
           <div className="hidden md:flex space-x-4 items-center">
             {links.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            <SignUpButton />
+            {!id ? (
+              <>
+                <SignUpButton />
+                <LoginButton />
+              </>
+            ) : (
+              <>
+                <UserDropdown />
+              </>
+            )}
+
             <ModeToggle />
           </div>
           {/* Hamburger Button */}

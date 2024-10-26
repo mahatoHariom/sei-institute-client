@@ -1,4 +1,4 @@
-import { EditProfile } from "@/components/edit-profile";
+// import { EditProfile } from "@/components/edit-profile";
 import { customMetaDataGenerator } from "@/lib/generate-metadata";
 import { Metadata } from "next";
 
@@ -14,9 +14,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-  return (
-    <>
-      <EditProfile />
-    </>
-  );
+  return <>{/* <EditProfile /> */}</>;
 }
