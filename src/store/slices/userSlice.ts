@@ -1,4 +1,4 @@
-import { Role } from "@/types/user";
+import { UserRole } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the initial state for the user
@@ -6,7 +6,7 @@ const initialState = {
   id: "",
   fullName: "",
   isVerified: false,
-  role: Role.user,
+  role: UserRole.USER,
 };
 
 const userSlice = createSlice({
