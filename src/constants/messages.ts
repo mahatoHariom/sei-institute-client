@@ -7,6 +7,7 @@ interface Messages {
   login: AuthMessages;
   register: AuthMessages;
   logout: AuthMessages;
+  profileComplete: AuthMessages;
 }
 
 export const Messages: Messages = {
@@ -21,5 +22,8 @@ export const Messages: Messages = {
   },
   logout: {
     success: "Logout successful!",
+  },
+  profileComplete: {
+    success: "Profile verified successfully!",
   },
 };

@@ -1,7 +1,6 @@
 import { UserRole } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the initial state for the user
 const initialState = {
   id: "",
   fullName: "",
@@ -13,19 +12,23 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // Sets the user data in the state
     setUser: (state, action: PayloadAction<typeof initialState>) => {
       return action.payload;
     },
-    // Clears the user data by resetting to the initial state
+
     clearUser: () => {
-      return initialState; // Reset to initial state
+      return initialState;
+    },
+
+    updateUser: (
+      state,
+      action: PayloadAction<Partial<typeof initialState>>
+    ) => {
+      return { ...state, ...action.payload };
     },
   },
 });
 
-// Export the actions
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, updateUser } = userSlice.actions;
 
-// Export the reducer
 export default userSlice.reducer;

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/components/home/navbar";
-import { navLinks } from "@/constants/nav-link";
+// import Navbar from "@/components/home/navbar";
+// import { navLinks } from "@/constants/nav-link";
 import { ThemeProvider } from "@/components/global/theme-provider";
 import { fontMontserrat } from "@/config/fonts";
 import { Providers } from "@/lib/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { GlobalModal } from "@/components/global/modal/global-modal";
-import Footer from "@/components/home/footer";
+// import Footer from "@/components/home/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,9 +31,9 @@ export default function RootLayout({
             <GlobalModal />
             <Toaster richColors position="bottom-right" />
             <div className="relative flex flex-col min-h-screen">
-              <Navbar links={navLinks} />
+              {/* <Navbar links={navLinks} /> */}
               <main className="flex-grow">{children}</main>
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </Providers>
         </ThemeProvider>

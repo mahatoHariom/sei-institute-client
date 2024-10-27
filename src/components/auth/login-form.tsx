@@ -23,6 +23,7 @@ export const LoginForm = () => {
   const onSubmit = (data: LoginFormData) => {
     loginUser(data, {
       onSuccess: (data) => {
+        Cookies.set("seiUser", JSON.stringify(data?.user));
         Cookies.set("accessToken", data.accessToken);
         Cookies.set("refreshToken", data.refreshToken);
         dispatch(setUser(data.user));
