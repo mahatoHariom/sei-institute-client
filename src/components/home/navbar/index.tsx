@@ -7,7 +7,7 @@ import MobileMenu from "./mobile-menu";
 import { NavbarProps } from "@/types/navbar.types";
 import { ModeToggle } from "@/components/global/theme-toggle";
 import { SignUpButton } from "@/components/auth/signup-button";
-import { LoginButton } from "@/components/auth/login-button";
+// import { LoginButton } from "@/components/auth/login-button";
 import UserDropdown from "./user-dropdown";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
             {!id ? (
               <>
                 <SignUpButton />
-                <LoginButton />
+                {/* <LoginButton /> */}
               </>
             ) : (
               <>
