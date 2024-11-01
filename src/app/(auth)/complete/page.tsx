@@ -22,15 +22,26 @@ const CompleteProfile = () => {
   const { mutate: completeProfile, isPending } = useCompleteProfile();
   const router = useRouter();
   const dispatch = useDispatch();
-
-  // Fetch profile data when the component mounts
   const { refetch: refetchProfile } = useGetProfile();
 
-  const onSubmit = (data: CompleteProfileFormData) => {
-    completeProfile(data, {
+  const onSubmit = async (data: CompleteProfileFormData) => {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+      // If the key is not 'profilePic', directly append it
+      if (key !== "profilePic") {
+        formData.append(key, value as string);
+      }
+    });
+
+    // Check if profilePic is a File and append it if it exists
+    if (data.profilePic instanceof File) {
+      formData.append("profilePic", data.profilePic);
+    }
+
+    completeProfile(formData as CompleteProfileFormData, {
       onSuccess: async () => {
         const { data: updatedProfileData } = await refetchProfile();
-        debugger;
 
         if (updatedProfileData) {
           Cookies.set("seiUser", JSON.stringify(updatedProfileData));
@@ -57,6 +68,7 @@ const CompleteProfile = () => {
             fatherName: "",
             parentContact: "",
             schoolCollegeName: "",
+            profilePic: undefined,
           }}
           validationSchema={completeProfileSchema}
           onSubmit={onSubmit}
@@ -97,6 +109,13 @@ const CompleteProfile = () => {
                 name="schoolCollegeName"
                 label="School/College Name"
                 placeholder="Enter school or college name"
+                control={control}
+              />
+              <FormFieldWrapper
+                name="profilePic"
+                label="Profile Picture"
+                type="file"
+                accept="image/*"
                 control={control}
               />
               <Button

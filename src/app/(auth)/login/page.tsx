@@ -16,6 +16,7 @@ import Link from "next/link";
 
 import { routesPath } from "@/constants/routes-path";
 import { useRouter } from "next/navigation";
+import { BaseUser, User } from "@/types";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -25,10 +26,9 @@ const LoginPage = () => {
   const onSubmit = (data: LoginFormData) => {
     loginUser(data, {
       onSuccess: (data) => {
-        Cookies.set("seiUser", JSON.stringify(data?.user));
         Cookies.set("accessToken", data.accessToken);
         Cookies.set("refreshToken", data.refreshToken);
-        dispatch(setUser(data.user));
+        dispatch(setUser(data?.user as BaseUser));
         router.push(routesPath.home);
         toast.success(Messages.login.success);
       },

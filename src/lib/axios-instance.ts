@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable padding-line-between-statements */
 import axios, {
   AxiosInstance,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 interface RefreshQueueItem {
   resolve: (value: void | PromiseLike<void>) => void;
@@ -15,20 +13,17 @@ interface RefreshQueueItem {
 let isRefreshing = false;
 const refreshQueue: RefreshQueueItem[] = [];
 
-// Create Axios instance
 const api: AxiosInstance = axios.create({
   baseURL: "http://localhost:9000/api/v1",
   withCredentials: true,
 });
 
-// Handle token error: remove cookies and redirect to login
 const handleTokenError = () => {
-  Cookie.remove("accessToken");
-  Cookie.remove("refreshToken");
+  Cookies.remove("accessToken");
+  Cookies.remove("refreshToken");
   window.location.href = "/login";
 };
 
-// Handle the queue after refreshing token
 const handleQueue = (error?: any) => {
   while (refreshQueue.length) {
     const { resolve, reject } = refreshQueue.shift()!;
@@ -40,10 +35,9 @@ const handleQueue = (error?: any) => {
   }
 };
 
-// Add Authorization header to requests
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = Cookie.get("accessToken");
+    const token = Cookies.get("accessToken");
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
@@ -53,7 +47,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle token refresh logic in response interceptor
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error) => {
@@ -65,51 +58,54 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const { status, data } = error.response;
-    const { message } = data;
+    const { status } = error.response;
 
-    if (status === 401 && message) {
-      if (
-        [
-          "NO_ACCESS_TOKEN",
-          "NO_REFRESH_TOKEN",
-          "INVALID_REFRESH_TOKEN",
-          "MISSING_REFRESH_TOKEN",
-          "INVALID_OR_EXPIRED_REFRESH_TOKEN",
-          "BEARER_TOKEN_MISSING",
-        ].includes(message)
-      ) {
-        handleTokenError();
-        return Promise.reject(error);
-      }
-
+    if (status === 401) {
+      // If request is unauthorized and hasn't been retried
       if (!originalRequest._retry) {
         originalRequest._retry = true;
 
+        // Start refreshing process if not already doing so
         if (!isRefreshing) {
           isRefreshing = true;
+          const refreshToken = Cookies.get("refreshToken");
+
+          // If no refresh token available, handle token error immediately
+          if (!refreshToken) {
+            handleTokenError();
+            return Promise.reject(error);
+          }
+
           try {
-            const response = await api.post("/auth/refresh");
+            // Attempt to refresh token
+            const response = await api.post("/auth/refresh", { refreshToken });
+            console.log(response, "DSf");
             const newAccessToken = response.data.accessToken;
-            Cookie.set("accessToken", newAccessToken);
+
+            // Update cookies and retry original request
+            Cookies.set("accessToken", newAccessToken);
+            handleQueue();
             originalRequest.headers = originalRequest.headers || {};
             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            handleQueue();
             return api(originalRequest);
-          } catch (refreshError) {
-            handleTokenError();
-            handleQueue(refreshError);
+          } catch (refreshError: any) {
+            handleQueue(refreshError); // Reject all queued requests with the refresh error
+            handleTokenError(); // Handle token error by redirecting to login
             return Promise.reject(refreshError);
           } finally {
             isRefreshing = false;
           }
-        } else {
-          return new Promise<void>((resolve, reject) => {
-            refreshQueue.push({ resolve, reject });
-          })
-            .then(() => api(originalRequest))
-            .catch((queueError) => Promise.reject(queueError));
         }
+      } else {
+        // Queue other requests while refreshing is in progress
+        return new Promise((resolve, reject) => {
+          refreshQueue.push({ resolve, reject });
+        })
+          .then(() => api(originalRequest)) // Retry the original request after token refresh
+          .catch((queueError) => {
+            handleTokenError(); // If queue fails, handle token error
+            return Promise.reject(queueError);
+          });
       }
     }
 

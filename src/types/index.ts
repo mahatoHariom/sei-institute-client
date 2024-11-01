@@ -85,18 +85,32 @@ export interface Enrollment {
   paymentStatus: PaymentStatus;
 }
 
-// User Interface
-export interface User {
+// User Detail Interface
+export interface UserDetail {
+  id: string;
+  phoneNumber?: string; // Optional field
+  address?: string; // Optional field
+  motherName?: string; // Optional field
+  fatherName?: string; // Optional field
+  profilePic?: string; // Optional field
+  parentContact?: string; // Optional field
+  schoolCollegeName?: string; // Optional field
+  userId: string; // Relation field
+}
+
+export interface BaseUser {
   id: string;
   fullName: string;
   email: string;
-  password: string; // Consider hashing this and not exposing it in the frontend
   isVerified: boolean;
   role: UserRole;
-  createdAt: Date;
-  updatedAt: Date;
-  images: Image[]; // Relation to images
-  testimonials: Testimonial[]; // Relation to testimonials
-  attendances: Attendance[]; // Link to daily attendance records
-  enrollments: Enrollment[]; // Relation to Enrollment for many-to-many with Course
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface User extends BaseUser {
+  testimonials: Testimonial[];
+  attendances: Attendance[];
+  enrollments: Enrollment[];
+  userDetail?: UserDetail;
 }

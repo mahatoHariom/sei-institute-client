@@ -1,24 +1,14 @@
 "use client";
-import PaymentForm from "@/components/esewa/esewa-form";
-// import { customMetaDataGenerator } from "@/lib/generate-metadata";
-// import { Metadata } from "next";
-
-// export async function generateMetadata(): Promise<Metadata> {
-//   // Generate the metadata using the fetched post data
-//   return customMetaDataGenerator({
-//     title: "hello"!,
-//     // description: ` Created by: ${post.author_username} - ${post.content).slice(0, 150)} + "...Read More`,
-//     // ogImage: post.image,
-//     // keywords: post.keywords,
-//     // canonicalUrl: `https://your-website.com/post/${post.slug}`
-//   });
-// }
+import CounterDetailPage from "@/components/home/counter-details";
+import HomeCarousel from "@/components/home/home-carousel";
+import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
 
 export default function Home() {
+  const { data, isSuccess } = useGetProfile();
   return (
     <>
-      {/* <EditProfile /> */}
-      <PaymentForm />
+      <HomeCarousel />
+      <CounterDetailPage />
     </>
   );
   //

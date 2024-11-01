@@ -1,11 +1,16 @@
-import { UserRole } from "@/types";
+import { Image, UserRole } from "@/types";
+import { UserDetail } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// Extend the initial state to include user details
 const initialState = {
   id: "",
   fullName: "",
+  email: "",
   isVerified: false,
   role: UserRole.USER,
+  createdAt: "",
+  updatedAt: "",
 };
 
 const userSlice = createSlice({
@@ -29,6 +34,7 @@ const userSlice = createSlice({
   },
 });
 
+// Export actions and reducer
 export const { setUser, clearUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

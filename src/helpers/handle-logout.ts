@@ -16,9 +16,7 @@ const useLogout = () => {
     dispatch(clearUser());
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    Cookies.remove("seiUser");
     router.push(routesPath.login);
-
     toast.error(Messages.logout.success);
 
     // router.push("/login");

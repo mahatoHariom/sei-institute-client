@@ -8,6 +8,7 @@ export const completeProfileSchema = z.object({
   fatherName: z.string().optional(),
   parentContact: z.string().optional(),
   schoolCollegeName: z.string().optional(),
+  profilePic: z.union([z.string(), z.instanceof(File)]).optional(),
 });
 
 export type CompleteProfileFormData = z.infer<typeof completeProfileSchema>;
