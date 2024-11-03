@@ -11,10 +11,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useLogout from "@/helpers/handle-logout";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { clearUser } from "@/store/slices/userSlice";
+import { useRouter } from "next/navigation";
+import { routesPath } from "@/constants/routes-path";
+import { toast } from "sonner";
+import { Messages } from "@/constants/messages";
+import { useLogoutHooks } from "@/hooks/users/user-logout";
+import { handleError } from "@/helpers/handle-error";
+// import useLogout from "@/helpers/handle-logout";
 
 const UserDropdown: React.FC = () => {
-  const handleLogout = useLogout();
+  const { mutate } = useLogoutHooks();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const handleLogout = () => {
+    mutate(undefined, {
+      onSuccess: () => {
+        dispatch(clearUser());
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
+        Cookies.remove("user");
+        router.push(routesPath.login);
+        toast.error(Messages.logout.success);
+      },
+      onError: handleError,
+    });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

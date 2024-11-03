@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FormWrapper } from "@/components/global/form-wrapper";
+import Cookies from "js-cookie";
 import { FormFieldWrapper } from "@/components/global/form-field-wrapper";
 import {
   CompleteProfileFormData,
@@ -12,17 +13,15 @@ import {
 import { useCompleteProfile } from "@/hooks/users/use-complete-profile-hooks";
 import { handleError } from "@/helpers/handle-error";
 import { Messages } from "@/constants/messages";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { routesPath } from "@/constants/routes-path";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/store/slices/userSlice";
-import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
+import { revalidatePath } from "next/cache";
 
 const CompleteProfile = () => {
   const { mutate: completeProfile, isPending } = useCompleteProfile();
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { refetch: refetchProfile } = useGetProfile();
+  // const dispatch = useDispatch();
+  // const { refetch: refetchProfile } = useGetProfile();
 
   const onSubmit = async (data: CompleteProfileFormData) => {
     const formData = new FormData();
@@ -40,15 +39,14 @@ const CompleteProfile = () => {
     }
 
     completeProfile(formData as CompleteProfileFormData, {
-      onSuccess: async () => {
-        const { data: updatedProfileData } = await refetchProfile();
-
-        if (updatedProfileData) {
-          Cookies.set("seiUser", JSON.stringify(updatedProfileData));
-          dispatch(setUser(updatedProfileData));
-          toast.success(Messages.profileComplete.success);
-          router.push(routesPath.home);
-        }
+      onSuccess: async (data) => {
+        debugger;
+        Cookies.set("accessToken", data.accessToken);
+        Cookies.set("user", JSON.stringify(data.updatedUser));
+        Cookies.set("refreshToken", data.refreshToken);
+        toast.success(Messages.profileComplete.success);
+        // await router.replace(routesPath.home);
+        router.refresh();
       },
       onError: handleError,
     });

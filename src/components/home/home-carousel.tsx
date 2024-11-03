@@ -1,8 +1,9 @@
 "use client";
-import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
+// import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
 import Carousel from "../carousel";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import Cookies from "js-cookie";
 // import { setUserDetail } from "@/store/slices/userSlice";
 
 const imgPreview = [
@@ -13,12 +14,12 @@ const imgPreview = [
 ];
 
 const HomeCarousel = () => {
-  const { data, isSuccess } = useGetProfile();
-  console.log(data, "Sdfsdf");
-  const dispatch = useDispatch();
-  if (isSuccess) {
-    // dispatch(setUserDetail(data?.userDetail));
-  }
+  // const { data, isSuccess } = useGetProfile();
+  // console.log(data, "Sdfsdf");
+  // const dispatch = useDispatch();
+  // if (isSuccess) {
+  // dispatch(setUserDetail(data?.userDetail));
+  // }
 
   return (
     <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:w-screen lg:h-[calc(100vh-64px)] relative">

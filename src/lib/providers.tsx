@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "@/store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import queryClient from "./query-client";
-import Hydration from "./query-hydration";
+// import Hydration from "./query-hydration";
 export interface ProvidersProps {
   children: React.ReactNode;
   themeProps?: ThemeProviderProps;

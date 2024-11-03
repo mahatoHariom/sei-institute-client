@@ -32,7 +32,7 @@ export async function completeProfile(data: CompleteProfileFormData) {
   return response.data;
 }
 
-export async function getProfile(): Promise<any> {
+export async function getProfile(): Promise<BaseUser> {
   const response = await api.get<User>("/auth/profile");
   console.log(response, "pose");
   return response.data;

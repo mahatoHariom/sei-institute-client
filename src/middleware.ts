@@ -1,50 +1,50 @@
+/* eslint-disable prefer-const */
 import { NextRequest, NextResponse } from "next/server";
-import { jwtDecode } from "jwt-decode";
-
-interface User {
-  isVerified: boolean;
-}
-
-const getUserFromToken = (token: string | undefined): User | null => {
-  if (!token) return null;
-  try {
-    const decoded = jwtDecode(token) as User;
-    // console.log("deco", decoded);
-    return decoded;
-  } catch (error) {
-    console.error("Failed to verify access token:", error);
-    return null;
-  }
-};
 
 const isPublicPage = (path: string): boolean =>
   ["/login", "/register"].includes(path);
 
-const redirectTo = (path: string, request: NextRequest): NextResponse =>
-  NextResponse.redirect(new URL(path, request.url));
+const redirectTo = (path: string, request: NextRequest): NextResponse => {
+  const redirectResponse = NextResponse.redirect(new URL(path, request.url));
+  redirectResponse.headers.set("x-middleware-cache", "no-cache"); // Disable caching
+  return redirectResponse;
+};
 
 export function middleware(request: NextRequest): NextResponse {
-  const accessToken = request.cookies.get("accessToken")?.value;
-  const user = getUserFromToken(accessToken);
+  const userCookie = request.cookies.get("user")?.value;
+  let user = null;
+
+  // Parse user cookie if it exists
+  if (userCookie) {
+    try {
+      user = JSON.parse(userCookie);
+    } catch (error) {
+      console.error("Failed to parse user cookie:", error);
+      // Clear invalid user cookie if needed
+      const response = redirectTo("/login", request);
+      response.cookies.delete("user");
+      return response;
+    }
+  }
 
   const { pathname } = request.nextUrl;
 
-  // 1. Redirect unauthenticated users trying to access protected routes
+  // Redirect unauthenticated users trying to access protected routes
   if (!user && !isPublicPage(pathname)) {
     return redirectTo("/login", request);
   }
 
-  // 2. Redirect verified users away from the "/complete" page
+  // Redirect verified users away from the "/complete" page
   if (user?.isVerified && pathname === "/complete") {
     return redirectTo("/", request);
   }
 
-  // 3. Redirect unverified users trying to access the home page to "/complete"
+  // Redirect unverified users trying to access the home page to "/complete"
   if (user && !user.isVerified && pathname === "/") {
     return redirectTo("/complete", request);
   }
 
-  // 4. Redirect authenticated users away from public pages like login or register
+  // Redirect authenticated users away from public pages like login or register
   if (user && isPublicPage(pathname)) {
     return redirectTo("/", request);
   }
@@ -53,7 +53,7 @@ export function middleware(request: NextRequest): NextResponse {
   return NextResponse.next();
 }
 
-// Configuration to apply middleware to specific routes
+// Apply middleware to all routes except those listed
 export const config = {
   matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)",
 };

@@ -11,10 +11,10 @@ import { SignUpButton } from "@/components/auth/signup-button";
 import UserDropdown from "./user-dropdown";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
+// import { useGetProfile } from "@/hooks/users/use-get-profile-hooks";
 
 const Navbar: React.FC<NavbarProps> = ({ links }) => {
-  const { data, isSuccess } = useGetProfile();
+  // const { data, isSuccess } = useGetProfile();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { id } = useSelector((state: RootState) => state.user);
 
