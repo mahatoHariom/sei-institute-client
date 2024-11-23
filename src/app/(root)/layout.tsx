@@ -7,13 +7,11 @@ import { Providers } from "@/lib/providers";
 export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <Providers>
-      <section>
-        <Navbar links={navLinks} />
-
-        <main>{props.children}</main>
-
+      <Navbar links={navLinks} />
+      <main>{props.children}</main>
+      <footer className="mt-10">
         <Footer />
-      </section>
+      </footer>
     </Providers>
   );
 }

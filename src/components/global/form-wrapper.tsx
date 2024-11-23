@@ -13,7 +13,7 @@ import { Form } from "@/components/ui/form";
 interface FormWrapperProps<T extends FieldValues> {
   defaultValues: DefaultValues<T>;
   validationSchema: ZodSchema<T>;
-  onSubmit: (data: T) => void;
+  onSubmit: (data: T, reset: () => void) => void; // Update to expect reset function
   children: (
     methods: UseFormReturn<T> & { isValid: boolean }
   ) => React.ReactNode;
@@ -28,13 +28,19 @@ export const FormWrapper = <T extends FieldValues>({
   const methods = useForm<T>({
     defaultValues,
     resolver: zodResolver(validationSchema),
-    mode: "onChange",
+    mode: "onChange", // You can also use 'onBlur' or 'all' based on your requirements
   });
 
   return (
     <FormProvider {...methods}>
       <Form {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={methods.handleSubmit((data) =>
+            onSubmit(data, methods.reset)
+          )}
+        >
+          {" "}
+          {/* Pass reset */}
           {children({ ...methods, isValid: methods.formState.isValid })}
         </form>
       </Form>

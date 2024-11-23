@@ -4,4 +4,5 @@ export const apiKeys = {
   register: "register",
   completeProfile: "completeProfile",
   getProfile: "getProfile",
+  contact: "contact",
 };

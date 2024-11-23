@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${fontMontserrat.variable} antialiased`}>
+      <body className={`${fontMontserrat.variable} antialiased `}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

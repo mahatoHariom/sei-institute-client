@@ -60,14 +60,12 @@ const LoginPage = () => {
                 label="Email Address"
                 placeholder="Email address"
                 control={control}
-                // className="border rounded-md p-2 transition duration-150 ease-in-out focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <FormFieldWrapper
                 name="password"
                 label="Password"
                 placeholder="Enter your password..."
                 control={control}
-                // className="border rounded-md p-2 transition duration-150 ease-in-out focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
               <Button
                 type="submit"

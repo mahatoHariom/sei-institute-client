@@ -13,31 +13,22 @@ import {
 import { useCompleteProfile } from "@/hooks/users/use-complete-profile-hooks";
 import { handleError } from "@/helpers/handle-error";
 import { Messages } from "@/constants/messages";
-import { redirect, useRouter } from "next/navigation";
-import { routesPath } from "@/constants/routes-path";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 const CompleteProfile = () => {
   const { mutate: completeProfile, isPending } = useCompleteProfile();
   const router = useRouter();
-  // const dispatch = useDispatch();
-  // const { refetch: refetchProfile } = useGetProfile();
 
   const onSubmit = async (data: CompleteProfileFormData) => {
     const formData = new FormData();
-
     Object.entries(data).forEach(([key, value]) => {
-      // If the key is not 'profilePic', directly append it
       if (key !== "profilePic") {
         formData.append(key, value as string);
       }
     });
-
-    // Check if profilePic is a File and append it if it exists
     if (data.profilePic instanceof File) {
       formData.append("profilePic", data.profilePic);
     }
-
     completeProfile(formData as CompleteProfileFormData, {
       onSuccess: async (data) => {
         debugger;
@@ -45,7 +36,6 @@ const CompleteProfile = () => {
         Cookies.set("user", JSON.stringify(data.updatedUser));
         Cookies.set("refreshToken", data.refreshToken);
         toast.success(Messages.profileComplete.success);
-        // await router.replace(routesPath.home);
         router.refresh();
       },
       onError: handleError,
