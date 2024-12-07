@@ -3,4 +3,5 @@ export const routesPath = {
   login: "/login",
   completeProfile: "/complete-profile",
   register: "/register",
+  userDashboard: "/user/dashboard",
 };

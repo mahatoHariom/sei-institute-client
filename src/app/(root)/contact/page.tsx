@@ -16,7 +16,7 @@ const ContactPage = () => {
   );
   console.log(submittedData);
   const { mutate, isPending } = useCreateContact();
-  const userId = useSelector((state: RootState) => state.user.id);
+  const { id: userId, email } = useSelector((state: RootState) => state.user);
 
   const onSubmit = (data: ContactFormData, reset: () => void) => {
     if (!userId) {
@@ -52,7 +52,7 @@ const ContactPage = () => {
           <FormWrapper
             defaultValues={{
               name: "",
-              email: "",
+              email: email ?? "",
               phone: "",
               message: "",
             }}

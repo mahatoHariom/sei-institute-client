@@ -8,6 +8,7 @@ interface Messages {
   register: AuthMessages;
   logout: AuthMessages;
   profileComplete: AuthMessages;
+  Enrolled: AuthMessages;
 }
 
 export const Messages: Messages = {
@@ -25,5 +26,9 @@ export const Messages: Messages = {
   },
   profileComplete: {
     success: "Profile verified successfully!",
+  },
+  Enrolled: {
+    success: "Enrolled for the course successfully",
+    error: "Something went wrong. Please try again later",
   },
 };

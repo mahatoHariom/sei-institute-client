@@ -39,6 +39,11 @@ const UserDropdown: React.FC = () => {
       onError: handleError,
     });
   };
+
+  const handleDashboard = () => {
+    router.push(routesPath.userDashboard);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,8 +56,9 @@ const UserDropdown: React.FC = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDashboard}>
+            Dashboard
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>

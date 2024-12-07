@@ -4,6 +4,7 @@ import { CompleteProfileFormData } from "@/schema/users/complete-profile-schema"
 import { LoginFormData } from "@/schema/users/login-schema";
 import { SignUpFormData } from "@/schema/users/signup-schema";
 import { BaseUser, User } from "@/types";
+import { GetUserCoursesResponse } from "@/types/subjects";
 
 import { AxiosResponse } from "axios";
 
@@ -35,5 +36,32 @@ export async function completeProfile(data: CompleteProfileFormData) {
 export async function getProfile(): Promise<BaseUser> {
   const response = await api.get<User>("/auth/profile");
   console.log(response, "pose");
+  return response.data;
+}
+
+export async function changePassword(data: {
+  password: string;
+  confirmPassword: string;
+}): Promise<void> {
+  const response = await api.post("/user/change-password", data);
+  return response.data;
+}
+
+export async function getUserCourses({
+  userId,
+  page,
+  limit,
+  search,
+}: {
+  userId: string;
+  page: number;
+  limit: number;
+  search?: string;
+}): Promise<GetUserCoursesResponse> {
+  // Use the GetUserCoursesResponse type
+  const response = await api.get(`/user/enrolled-courses/${userId}`, {
+    params: { page, limit, search },
+  });
+
   return response.data;
 }

@@ -8,3 +8,5 @@ export interface UserDetail {
   parentContact?: string;
   schoolCollegeName?: string;
 }
+
+

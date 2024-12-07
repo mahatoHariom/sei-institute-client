@@ -5,4 +5,7 @@ export const apiKeys = {
   completeProfile: "completeProfile",
   getProfile: "getProfile",
   contact: "contact",
+  getAllSubjects: "getAllSubjects",
+  enrollInSubject: "enrollInSubject",
+  getEnrolledCourses: "getEnrolledCourses",
 };

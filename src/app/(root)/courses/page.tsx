@@ -1,5 +1,3 @@
-"use client";
-
 import { CoursesSection } from "@/components/courses/courses-section";
 import React from "react";
 
